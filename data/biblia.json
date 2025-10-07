@@ -1,0 +1,64 @@
+{
+  "livros": [
+    {
+      "nome": "Gênesis",
+      "abreviacao": "Gn",
+      "testamento": "Velho",
+      "capitulos": 50,
+      "exemplo": {
+        "capitulo": 1,
+        "versiculos": [
+          "No princípio, criou Deus os céus e a terra.",
+          "E a terra era sem forma e vazia; e havia trevas sobre a face do abismo; e o Espírito de Deus se movia sobre a face das águas.",
+          "E disse Deus: Haja luz. E houve luz."
+        ]
+      }
+    },
+    {
+      "nome": "Êxodo",
+      "abreviacao": "Êx",
+      "testamento": "Velho",
+      "capitulos": 40
+    },
+    {
+      "nome": "Salmos",
+      "abreviacao": "Sl",
+      "testamento": "Velho",
+      "capitulos": 150,
+      "exemplo": {
+        "capitulo": 23,
+        "versiculos": [
+          "O Senhor é o meu pastor; nada me faltará.",
+          "Deitar-me faz em verdes pastos, guia-me mansamente a águas tranquilas.",
+          "Refrigera a minha alma; guia-me pelas veredas da justiça por amor do seu nome."
+        ]
+      }
+    },
+    {
+      "nome": "Mateus",
+      "abreviacao": "Mt",
+      "testamento": "Novo",
+      "capitulos": 28
+    },
+    {
+      "nome": "João",
+      "abreviacao": "Jo",
+      "testamento": "Novo",
+      "capitulos": 21,
+      "exemplo": {
+        "capitulo": 3,
+        "versiculos": [
+          "E, como Moisés levantou a serpente no deserto, assim importa que o Filho do Homem seja levantado,",
+          "para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
+          "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna."
+        ]
+      }
+    },
+    {
+      "nome": "Romanos",
+      "abreviacao": "Rm",
+      "testamento": "Novo",
+      "capitulos": 16
+    }
+  ]
+}

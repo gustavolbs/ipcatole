@@ -1,26 +1,243 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 40 35% 92%;
+    --foreground: 150 45% 20%;
+
+    --card: 45 40% 88%;
+    --card-foreground: 150 45% 20%;
+
+    --popover: 45 40% 88%;
+    --popover-foreground: 150 45% 20%;
+
+    --primary: 150 55% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 50% 55%;
+    --secondary-foreground: 150 45% 20%;
+
+    --muted: 40 30% 80%;
+    --muted-foreground: 150 20% 40%;
+
+    --accent: 150 60% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 25% 75%;
+    --input: 40 25% 75%;
+    --ring: 150 55% 42%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(150 55% 42%),
+      hsl(150 60% 38%)
+    );
+    --gradient-hero: linear-gradient(
+      180deg,
+      hsl(150 55% 42% / 0.95),
+      hsl(150 50% 35% / 0.95)
+    );
+    --shadow-elegant: 0 10px 40px -10px hsl(150 55% 42% / 0.3);
+    --shadow-card: 0 4px 12px hsl(150 40% 25% / 0.15);
+
+    --sidebar-background: 150 50% 35%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 150 60% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 45% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 150 40% 28%;
+    --sidebar-ring: 150 60% 45%;
+  }
+
+  .dark {
+    --background: 150 40% 12%;
+    --foreground: 40 30% 88%;
+
+    --card: 150 35% 16%;
+    --card-foreground: 40 30% 88%;
+
+    --popover: 150 35% 16%;
+    --popover-foreground: 40 30% 88%;
+
+    --primary: 150 60% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 55% 60%;
+    --secondary-foreground: 150 40% 12%;
+
+    --muted: 150 25% 22%;
+    --muted-foreground: 150 15% 70%;
+
+    --accent: 150 65% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 25% 25%;
+    --input: 150 25% 25%;
+    --ring: 150 60% 50%;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(150 60% 50%),
+      hsl(150 65% 48%)
+    );
+    --gradient-hero: linear-gradient(
+      180deg,
+      hsl(150 45% 20% / 0.95),
+      hsl(150 40% 25% / 0.95)
+    );
+    --shadow-elegant: 0 10px 40px -10px hsl(150 60% 50% / 0.4);
+    --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 150 45% 15%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 150 60% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 35% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 150 30% 18%;
+    --sidebar-ring: 150 60% 50%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+
+  /* IE and Edge */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+  }
+}
+@media (max-width: 768px) {
+  .fc-calendar {
+    font-size: 0.8rem; /* texto menor */
+  }
+
+  .fc-month-view {
+    margin: 0 auto;
+    width: 100%;
+    border-spacing: 2px;
+  }
+
+  .fc-header {
+    padding: 4px 0;
+    font-size: 0.7rem;
+  }
+
+  .fc-date-cell {
+    padding: 2px;
+    text-align: center;
+  }
+
+  .fc-button-link {
+    font-size: 0.8rem;
+  }
+
+  .fc-event {
+    font-size: 0.65rem;
+    padding: 1px 3px;
+    line-height: 1.1;
+  }
+
+  .fc-toolbar {
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+  }
+
+  .fc-toolbar-label {
+    font-size: 0.9rem;
+  }
+
+  .fc-toolbar button {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+  }
 }
