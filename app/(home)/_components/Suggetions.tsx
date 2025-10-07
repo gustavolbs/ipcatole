@@ -37,11 +37,11 @@ export const Suggestions: React.FC = () => {
         body: JSON.stringify({
           ...formData,
           subject: `[Nova sugestão]: ${formData.subject}`,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
         }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       });
 
       setFormData(INITIAL_STATE);
@@ -100,7 +100,7 @@ export const Suggestions: React.FC = () => {
                     subject: value,
                   }))
                 }
-                defaultValue={formData.subject}
+                value={formData.subject}
                 required
               >
                 <SelectTrigger>
