@@ -11,6 +11,7 @@ const navItems = [
   { name: "Hinário", path: "/hinario" },
   { name: "Catecismo", path: "/catecismo" },
   { name: "Artigos", path: "/artigos" },
+  { name: "Entrar", path: "/login" },
 ];
 
 const Navbar = () => {

@@ -1,0 +1,4 @@
+[auth.external.google]
+enabled = true
+client_id = "env(SUPABASE_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
