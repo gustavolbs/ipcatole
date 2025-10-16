@@ -13,31 +13,30 @@ async function connectMongo() {
   isConnected = true;
 }
 
-// Definição do schema e model da devocional
-const devotionalSchema = new mongoose.Schema(
+// Definição do schema e model das campanhas
+const campaignSchema = new mongoose.Schema(
   {
-    author: { type: String, required: true },
-    description: { type: String, required: true },
-    title: { type: String, required: true },
+    isActive: { type: Boolean, required: true },
+    description: { type: String, required: true, maxLength: 140 },
   },
   { timestamps: true }
 );
 
 // Evita recriar o model em hot reload
-const Devotional =
-  mongoose.models.Devotional || mongoose.model("Devotional", devotionalSchema);
+const Campaign =
+  mongoose.models.Campaign || mongoose.model("Campaign", campaignSchema);
 
-// Handler GET → retorna devocional
+// Handler GET → retorna campanhas
 export async function GET() {
   try {
     await connectMongo();
-    const data = await Devotional.findOne();
+    const data = await Campaign.findOne();
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error("Erro ao buscar pergunta:", error);
+    console.error("Erro ao buscar campanhas:", error);
     return NextResponse.json(
-      { message: "Erro ao buscar pergunta" },
+      { message: "Erro ao buscar campanhas" },
       { status: 500 }
     );
   }
@@ -48,13 +47,13 @@ export async function PUT(req: NextRequest) {
     await connectMongo();
     const data = await req.json();
 
-    // Limpa a devocional antiga antes de adicionar uma nova
-    await Devotional.deleteOne();
+    // Limpa a campanha antiga antes de adicionar uma nova
+    await Campaign.deleteOne();
 
-    // Adiciona a nova devocional
-    await Devotional.create(data);
+    // Adiciona a nova campanha
+    await Campaign.create(data);
     return NextResponse.json(
-      { message: "Devocional atualizada com sucesso" },
+      { message: "Campanha atualizada com sucesso" },
       { status: 200 }
     );
   } catch (err) {
@@ -62,7 +61,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json(
       {
         message:
-          "Erro ao atualizar devocional. Certifique-se de preencher todos os dados corretamente!",
+          "Erro ao atualizar campanha. Certifique-se de preencher todos os dados corretamente!",
       },
       { status: 500 }
     );

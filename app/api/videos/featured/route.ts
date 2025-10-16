@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { type FeaturedVideo } from "@/app/(non-protected)/(home)/_components";
 
 if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI não configurada no arquivo .env");
@@ -46,6 +47,42 @@ export async function GET() {
     console.error("Erro ao buscar vídeos:", error);
     return NextResponse.json(
       { message: "Erro ao buscar vídeos em destaque" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongo();
+    const data = await req.json();
+
+    // Adiciona os novos vídeos
+    const validVideos = data.filter(
+      (video: FeaturedVideo) => video.link !== "" && video.title !== ""
+    );
+    // Apaga todos os videos antes de adicionar um novo conjunto
+    if (validVideos.length > 0) {
+      const newVideos = validVideos.map((video: FeaturedVideo) => ({
+        title: video.title,
+        link: video.link,
+      }));
+      await Video.deleteMany();
+      await Video.insertMany(newVideos);
+
+      return NextResponse.json(
+        { message: "Vídeos em destaque atualizados com sucesso" },
+        { status: 200 }
+      );
+    }
+    throw new Error("Nenhum vídeo válido para adicionar");
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      {
+        message:
+          "Erro ao atualizar vídeos em destaque. Certifique-se de preencher todos os dados corretamente!",
+      },
       { status: 500 }
     );
   }

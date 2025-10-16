@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-type ImageSchema = {
+export type ImageSchema = {
   link: string;
   description: string;
   _id: string;

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { type ImageSchema } from "@/app/(non-protected)/(home)/_components";
 
 if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI não configurada no arquivo .env");
@@ -44,6 +45,43 @@ export async function GET() {
     console.error("Erro ao buscar galeria:", error);
     return NextResponse.json(
       { message: "Erro ao buscar galeria" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongo();
+
+    const data = await req.json();
+
+    // Adiciona a nova galeria
+    const validImages = data.filter(
+      (image: ImageSchema) => image.description?.trim() && image.link?.trim()
+    );
+    // Apaga toda a galeria antes de adicionar a nova
+    if (validImages.length > 0) {
+      const newFeed = validImages.map((image: ImageSchema) => ({
+        description: image.description,
+        link: image.link,
+      }));
+      await Gallery.deleteMany();
+      await Gallery.insertMany(newFeed);
+
+      return NextResponse.json(
+        { message: "Galeria atualizada com sucesso" },
+        { status: 200 }
+      );
+    }
+    throw new Error("Nenhuma imagem válida para adicionar");
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      {
+        message:
+          "Erro ao atualizar galeria. Certifique-se de preencher todos os dados corretamente!",
+      },
       { status: 500 }
     );
   }

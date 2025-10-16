@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { type Notice as NoticeType } from "@/app/(non-protected)/(home)/_components";
 
 if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI não configurada no arquivo .env");
@@ -19,7 +20,7 @@ const noticeSchema = new mongoose.Schema(
     image: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    link: { type: String, required: true },
+    link: { type: String, required: false },
   },
   { timestamps: true }
 );
@@ -39,6 +40,48 @@ export async function GET() {
     console.error("Erro ao buscar avisos:", error);
     return NextResponse.json(
       { message: "Erro ao buscar avisos" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongo();
+
+    const data = await req.json();
+
+    // Adiciona os novos avisos
+    const validNotices = data.filter(
+      (notice: NoticeType) =>
+        notice.title?.trim() &&
+        notice.image?.trim() &&
+        notice.description?.trim()
+    );
+    // Apaga todos os avisos antes de adicionar um novo conjunto
+    if (validNotices.length > 0) {
+      const newNotices = validNotices.map((notice: NoticeType) => ({
+        title: notice.title,
+        ...(notice.link ? { link: notice.link } : {}),
+        description: notice.description,
+        image: notice.image,
+      }));
+      await Notice.deleteMany();
+      await Notice.insertMany(newNotices);
+
+      return NextResponse.json(
+        { message: "Avisos atualizados com sucesso" },
+        { status: 200 }
+      );
+    }
+    throw new Error("Nenhum aviso válido para adicionar");
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      {
+        message:
+          "Erro ao atualizar avisos. Certifique-se de preencher todos os dados corretamente!",
+      },
       { status: 500 }
     );
   }

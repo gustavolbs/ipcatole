@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import breveCatecismo from "@/data/catecismo-breve";
 
@@ -49,6 +49,40 @@ export async function GET() {
     console.error("Erro ao buscar pergunta:", error);
     return NextResponse.json(
       { message: "Erro ao buscar pergunta" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongo();
+
+    const data = await req.json();
+
+    // Limpa a pergunta antiga antes de adicionar uma nova
+    await WeeklyQuestion.deleteOne();
+
+    // Adiciona a nova pergunta
+    const question = Number(data.question);
+    const isValidQuestion = question >= 1 && question <= 107;
+
+    if (isValidQuestion) {
+      await WeeklyQuestion.create(data);
+      return NextResponse.json(
+        { message: "Pergunta Semanal atualizada com sucesso" },
+        { status: 200 }
+      );
+    } else {
+      throw new Error("Erro ao modificar Pergunta Semanal");
+    }
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      {
+        message:
+          "Erro ao atualizar pergunta. Certifique-se de preencher todos os dados corretamente!",
+      },
       { status: 500 }
     );
   }

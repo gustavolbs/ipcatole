@@ -1,6 +1,9 @@
-export const getBirthdays = async () => {
+export const getCalendarEvents = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/calendar`, {
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      tags: ["weekly-calendar"],
+    },
   });
   if (!res.ok) {
     throw new Error("Erro ao buscar eventos");

@@ -2,12 +2,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Calendar as CalendarIcon } from "lucide-react";
 import Image from "next/image";
 
-type Notice = {
+export type Notice = {
   _id: string;
   description: string;
   image: string;
   title: string;
-  link: string;
+  link?: string;
 };
 export const Notices = ({ notices }: { notices: Notice[] }) => {
   return (
@@ -55,7 +55,7 @@ const NoticeCard = ({ notice }: { notice: Notice }) => {
       </CardHeader>
       <CardContent>
         <p
-          className="text-muted-foreground line-clamp-2"
+          className="text-muted-foreground line-clamp-3"
           title={notice.description}
         >
           {notice.description}

@@ -1,4 +1,5 @@
 const CHANNEL_ID = "UC_2HBNGAUETOKtX16CoKROg";
+const API_KEY = process.env.YOUTUBE_API_KEY!;
 
 export interface YouTubeVideo {
   embedUrl: string;
@@ -9,24 +10,28 @@ export interface YouTubeVideo {
  * Verifica se há live ativa. Caso não, retorna o último vídeo embed.
  */
 export async function getYouTubeEmbedUrl(): Promise<YouTubeVideo> {
-  const liveUrl = `https://www.youtube.com/embed/live_stream?channel=${CHANNEL_ID}`;
-
   try {
-    const res = await fetch(liveUrl);
-    const html = await res.text();
+    // 🔴 Primeiro: verificar se há live ativa
+    const liveRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${API_KEY}`,
+      {
+        cache: "force-cache",
+        next: {
+          revalidate: 3600, // Revalida a cada 1 hora
+        },
+      }
+    );
+    const liveData = await liveRes.json();
 
-    // Se tiver uma tag indicando live, retorna live
-    if (
-      html.includes('itemprop="isLiveBroadcast"') ||
-      html.includes('"isLive":true')
-    ) {
+    if (liveData.items && liveData.items.length > 0) {
+      const liveId = liveData.items[0].id.videoId;
       return {
-        embedUrl: liveUrl,
+        embedUrl: `https://www.youtube.com/embed/${liveId}`,
         isLive: true,
       };
     }
 
-    // Se não tiver live, tentar pegar o último vídeo via scraping simples
+    // 🟢 Caso não tenha live, pega o último vídeo publicado
     const channelVideosPage = `https://www.youtube.com/channel/${CHANNEL_ID}/videos`;
     const res2 = await fetch(channelVideosPage);
     const html2 = await res2.text();
@@ -43,7 +48,7 @@ export async function getYouTubeEmbedUrl(): Promise<YouTubeVideo> {
   } catch (err) {
     console.error("Erro ao buscar vídeo do YouTube:", err);
     return {
-      embedUrl: liveUrl, // fallback
+      embedUrl: `https://www.youtube.com/embed/live_stream?channel=${CHANNEL_ID}`,
       isLive: false,
     };
   }

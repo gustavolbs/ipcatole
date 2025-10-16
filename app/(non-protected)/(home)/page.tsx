@@ -1,19 +1,23 @@
 import { getYouTubeEmbedUrl } from "@/lib/youtube";
-import { Live } from "./_components/Live";
-import { FeaturedVideos } from "./_components/FeaturedVideos";
-import { getFeaturedVideos } from "../api/videos/featured/getFeaturedVideos";
-import { getWeeklyQuestion } from "../api/catecismo/semanal/getWeeklyQuestion";
-import { WeeklyQuestion } from "./_components/WeeklyQuestion";
-import { Devotional } from "./_components/Devotional";
-import { getDevotional } from "../api/pastoral/getDevotional";
-import { Birthdays } from "./_components/Birthdays";
-import { getBirthdays } from "../api/birthdays/getBirthdays";
-import { Calendar } from "./_components/Calendar/Calendar";
-import { GalleryFeed } from "./_components/GalleryFeed";
-import { getGalleryFeed } from "../api/gallery/getGalleryFeed";
-import { Notices } from "./_components/Notices";
-import { getNotices } from "../api/notices/getGalleryFeed";
-import { Suggestions } from "./_components/Suggetions";
+import {
+  getFeaturedVideos,
+  getWeeklyQuestion,
+  getDevotional,
+  getBirthdays,
+  getGalleryFeed,
+  getNotices,
+} from "@/app/api";
+import {
+  Live,
+  FeaturedVideos,
+  Notices,
+  GalleryFeed,
+  WeeklyQuestion,
+  Devotional,
+  Birthdays,
+  Suggestions,
+  Calendar,
+} from "./_components";
 
 const Home = async () => {
   const [
@@ -36,7 +40,6 @@ const Home = async () => {
 
   return (
     <div className="min-h-screen">
-      {/* TODO: BANNER CAMPANHA */}
       {/* Hero Section com Live/Vídeo */}
       <Live video={video} />
 
