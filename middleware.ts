@@ -1,30 +1,24 @@
 import { NextResponse } from "next/server";
-import { createServer } from "@/lib/supabase/server";
+import { getUserProfile } from "./lib/supabase/getUserProfile";
 
 export async function middleware(req: Request) {
   const url = new URL(req.url);
-  const supabase = createServer();
-
-  // Pega usuário logado
-  const {
-    data: { user },
-  } = await (await supabase).auth.getUser();
+  const userData = await getUserProfile();
 
   // Rotas que queremos proteger
-  const protectedPaths = ["/midia", "/admin"];
+  const protectedPaths = ["/midia", "/admin", "/dashboard", "/membros"];
 
   // 1️⃣ Usuário tentando acessar rota protegida sem login
-  if (protectedPaths.some((path) => url.pathname.startsWith(path)) && !user) {
+  if (
+    protectedPaths.some((path) => url.pathname.startsWith(path)) &&
+    !userData?.user
+  ) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
   // Checa o perfil do usuário logado
-  if (user) {
-    const { data: profile } = await (await supabase)
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+  if (userData?.user) {
+    const { user, profile } = userData;
 
     // 2️⃣ Usuário tentando acessar /login enquanto já está logado
     if (url.pathname === "/login") {
@@ -34,7 +28,7 @@ export async function middleware(req: Request) {
       }
 
       // 2️⃣.2 Usuário tem privilegios (admin, conselho, presidentes, mídia)
-      return NextResponse.redirect(new URL("/midia", req.url));
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
     // 3️⃣ Checagem de role para /admin
@@ -50,5 +44,11 @@ export async function middleware(req: Request) {
 
 // Configura quais rotas o middleware deve rodar
 export const config = {
-  matcher: ["/login", "/midia/:path*", "/admin/:path*"],
+  matcher: [
+    "/login",
+    "/midia/:path*",
+    "/admin/:path*",
+    "/dashboard/:path*",
+    "/membros/:path*",
+  ],
 };

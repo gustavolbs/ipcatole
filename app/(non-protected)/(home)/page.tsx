@@ -6,6 +6,7 @@ import {
   getBirthdays,
   getGalleryFeed,
   getNotices,
+  getCalendarEvents,
 } from "@/app/api";
 import {
   Live,
@@ -33,6 +34,7 @@ const Home = async () => {
     birthdays,
     galleryFeed,
     notices,
+    calendar,
   ] = await Promise.all([
     getYouTubeEmbedUrl(),
     getFeaturedVideos(),
@@ -41,6 +43,7 @@ const Home = async () => {
     getBirthdays(),
     getGalleryFeed(),
     getNotices(),
+    getCalendarEvents(),
   ]);
 
   return (
@@ -64,7 +67,7 @@ const Home = async () => {
         {/* Aniversariantes da Semana */}
         <Birthdays birthdays={birthdays} />
         {/* Calendário de Eventos */}
-        <Calendar />
+        <Calendar events={calendar} />
         {/* Formulário de Sugestões */}
         <Suggestions />
       </div>

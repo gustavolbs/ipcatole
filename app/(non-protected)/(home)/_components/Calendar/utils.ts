@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import "dayjs/locale/pt-br";
-import { events, SOCIETY_COLORS, TIMEZONE } from "./constants";
+import { SOCIETIES, TIMEZONE } from "./constants";
+import { Event } from "@/app/(protected)/midia/_components/Calendar";
 
 // Configurações do dayjs
 dayjs.extend(utc);
@@ -10,50 +11,43 @@ dayjs.extend(timezone);
 dayjs.locale("pt-br");
 dayjs.tz.setDefault(TIMEZONE);
 
-export const mapEvents = events.map((event) => {
-  const isAllDay = !event.date.includes("T");
+export const mapEvents = (events: Event[]) => {
+  return events.map((event) => {
+    // Combina data e hora se startTime existir
+    const startDateTime = event.startTime
+      ? dayjs.tz(`${event.startDate}T${event.startTime}`, TIMEZONE)
+      : dayjs.tz(event.startDate, TIMEZONE);
 
-  const start = isAllDay
-    ? dayjs.tz(event.date, TIMEZONE).startOf("day")
-    : dayjs.tz(event.date, TIMEZONE);
+    const endDateTime = event.endDate
+      ? dayjs.tz(event.endDate, TIMEZONE)
+      : startDateTime; // se não houver endDate, usa start
 
-  const end = event.end ? dayjs.tz(event.end, TIMEZONE).endOf("day") : start;
-
-  return {
-    ...event,
-    allDay: isAllDay,
-    start: start.toISOString(),
-    end: end.toISOString(),
-    backgroundColor:
-      SOCIETY_COLORS[event.society as keyof typeof SOCIETY_COLORS],
-    borderColor: SOCIETY_COLORS[event.society as keyof typeof SOCIETY_COLORS],
-  };
-});
-
-export const filterEventsByDate = (selectedDate: string | null) => {
-  if (!selectedDate) return [];
-
-  const selected = dayjs.tz(selectedDate, TIMEZONE).startOf("day");
-
-  return mapEvents.filter((event) => {
-    const start = dayjs.tz(event.date, TIMEZONE).startOf("day");
-    const end = event.end
-      ? dayjs.tz(event.end, TIMEZONE).endOf("day")
-      : start.endOf("day");
-
-    return (
-      selected.isAfter(start.subtract(1, "millisecond")) &&
-      selected.isBefore(end.add(1, "millisecond"))
-    );
+    return {
+      location: event.location,
+      society: event.society,
+      startDateTime: event.startTime,
+      title: event.title,
+      allDay: !event.startTime, // só é dia inteiro se não tiver hora
+      start: startDateTime.toISOString(),
+      end: endDateTime.toISOString(),
+      backgroundColor:
+        SOCIETIES[event.society as keyof typeof SOCIETIES]?.color,
+      borderColor: SOCIETIES[event.society as keyof typeof SOCIETIES]?.color,
+    };
   });
 };
 
-export const formatEventTime = (start: string, end?: string) => {
-  const startTime = dayjs.tz(start, TIMEZONE).format("HH:mm");
-  if (!end) return startTime;
+export const filterEventsByDate = (
+  events: ReturnType<typeof mapEvents>,
+  selectedDate: string | null
+) => {
+  if (!selectedDate) return [];
 
-  const endTime = dayjs.tz(end, TIMEZONE).format("HH:mm");
-  return startTime === endTime ? startTime : `${startTime} - ${endTime}`;
+  return events.filter((event) => {
+    const eventStart = dayjs.tz(event.start, TIMEZONE).format("YYYY-MM-DD");
+    const eventEnd = dayjs.tz(event.end, TIMEZONE).format("YYYY-MM-DD");
+    return selectedDate >= eventStart && selectedDate <= eventEnd;
+  });
 };
 
 export const formatDisplayDate = (date: string) => {

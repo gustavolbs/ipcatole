@@ -29,7 +29,6 @@ export const CampaignBanner = () => {
       try {
         const data = await getCampaign();
         setCampaign(data);
-        console.log("Campanha semanal carregada:", data);
       } catch (error) {
         console.error("Erro ao carregar campanha semanal:", error);
       } finally {

@@ -6,10 +6,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { useState, useRef } from "react";
 import { mapEvents } from "./utils";
 import { CalendarEvents } from "./Events";
+import { Event } from "@/app/(protected)/midia/_components/Calendar";
 
-export const Calendar = () => {
+export const Calendar = ({ events }: { events: Event[] }) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const lastSelectedEl = useRef<HTMLElement | null>(null);
+  const mappedEvents = mapEvents(events);
 
   return (
     <section>
@@ -24,7 +26,7 @@ export const Calendar = () => {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           locale="pt-br"
-          events={mapEvents}
+          events={mappedEvents}
           dayMaxEventRows={2}
           buttonText={{ today: "Hoje" }}
           dateClick={(args) => {
@@ -41,7 +43,7 @@ export const Calendar = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <CalendarEvents selectedDate={selectedDate} />
+        <CalendarEvents events={mappedEvents} selectedDate={selectedDate} />
       </div>
     </section>
   );

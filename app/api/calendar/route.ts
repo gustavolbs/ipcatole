@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { Event } from "@/app/(protected)/midia/_components/Calendar";
 
 if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI não configurada no arquivo .env");
@@ -18,8 +19,10 @@ const calendarSchema = new mongoose.Schema(
   {
     startDate: { type: String, required: true },
     endDate: { type: String, required: true },
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     society: { type: String, required: true },
+    startTime: { type: String, required: true },
+    location: { type: String, required: true },
   },
   { timestamps: true }
 );
@@ -45,6 +48,55 @@ export async function GET() {
     console.error("Erro ao buscar eventos:", error);
     return NextResponse.json(
       { message: "Erro ao buscar eventos" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongo();
+
+    const events = await req.json();
+
+    // Valida apenas eventos com todos os campos obrigatórios preenchidos
+    const validEvents = events.filter(
+      (event: Event) =>
+        event.title?.trim() &&
+        event.startDate?.trim() &&
+        event.endDate?.trim() &&
+        event.startTime?.trim() &&
+        event.society?.trim() &&
+        event.location?.trim()
+    );
+
+    if (validEvents.length === 0) {
+      throw new Error("Nenhum evento válido para adicionar");
+    }
+
+    const newEvents = validEvents.map((event: Event) => ({
+      title: event.title,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      startTime: event.startTime,
+      society: event.society,
+      location: event.location,
+    }));
+    // Limpa eventos antigos e adiciona os novos
+    await Calendar.deleteMany();
+    await Calendar.insertMany(newEvents);
+
+    return NextResponse.json(
+      { message: "Eventos atualizados com sucesso" },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Erro ao atualizar eventos:", err);
+    return NextResponse.json(
+      {
+        message:
+          "Erro ao atualizar eventos. Certifique-se de preencher todos os campos corretamente!",
+      },
       { status: 500 }
     );
   }

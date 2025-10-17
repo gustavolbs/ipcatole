@@ -1,18 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  filterEventsByDate,
-  formatEventTime,
-  formatDisplayDate,
-} from "./utils";
-import { SOCIETY_COLORS, TIMEZONE } from "./constants";
+import { filterEventsByDate, formatDisplayDate, mapEvents } from "./utils";
+import { SOCIETIES, TIMEZONE } from "./constants";
 import dayjs from "dayjs";
 
 interface CalendarEventsProps {
   selectedDate: string | null;
+  events: ReturnType<typeof mapEvents>;
 }
 
-export const CalendarEvents = ({ selectedDate }: CalendarEventsProps) => {
-  const filteredEvents = filterEventsByDate(selectedDate);
+export const CalendarEvents = ({
+  selectedDate,
+  events,
+}: CalendarEventsProps) => {
+  const filteredEvents = filterEventsByDate(events, selectedDate);
 
   if (!selectedDate) return null;
 
@@ -44,15 +44,16 @@ export const CalendarEvents = ({ selectedDate }: CalendarEventsProps) => {
                   ? dayjs.tz(selectedDate, TIMEZONE)
                   : startDate;
 
+                const borderLeftColor =
+                  SOCIETIES[
+                    item.society.toLowerCase() as keyof typeof SOCIETIES
+                  ].color;
                 return (
                   <div
                     key={i}
                     className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border-l-4"
                     style={{
-                      borderLeftColor:
-                        SOCIETY_COLORS[
-                          item.society as keyof typeof SOCIETY_COLORS
-                        ],
+                      borderLeftColor,
                     }}
                   >
                     <div>
@@ -70,7 +71,7 @@ export const CalendarEvents = ({ selectedDate }: CalendarEventsProps) => {
                     <div className="text-right">
                       {!item.allDay && (
                         <p className="text-sm font-medium text-primary">
-                          {formatEventTime(item.start, item.end)}
+                          {item.startDateTime}
                         </p>
                       )}
                       <p className="text-xs text-muted-foreground">

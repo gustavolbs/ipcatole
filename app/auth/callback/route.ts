@@ -11,5 +11,5 @@ export async function GET(request: Request) {
   }
 
   // redireciona pra área protegida
-  return NextResponse.redirect(new URL("/midia", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url));
 }

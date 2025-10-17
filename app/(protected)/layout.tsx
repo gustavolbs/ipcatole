@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { createServer } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
+import { getUserProfile } from "@/lib/supabase/getUserProfile";
 
 const ROLES_ALLOWED = ["admin", "conselho", "presidentes", "midia"];
 
@@ -9,20 +9,12 @@ export default async function ProtectedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServer();
-  const {
-    data: { user },
-  } = await (await supabase).auth.getUser();
-
-  if (!user) {
+  const userData = await getUserProfile();
+  if (!userData?.user) {
     redirect("/login");
   }
 
-  const { data: profile } = await (await supabase)
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
+  const { user, profile } = userData;
 
   if (!ROLES_ALLOWED.includes(profile?.role || "") || !profile) {
     redirect("/");

@@ -118,7 +118,7 @@ export const FeaturedVideos = () => {
           </div>
         ))}
 
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <Button onClick={handleAddVideo} variant="outline" className="flex-1">
             <Plus className="h-4 w-4 mr-2" />
             Adicionar Vídeo
