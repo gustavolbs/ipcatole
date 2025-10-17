@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
 
 interface Props {
   params: {
@@ -12,6 +13,17 @@ interface Hino {
   categoria: string;
   estrofes: string[];
 }
+
+export const generateMetadata = async (props: {
+  params: Promise<{ index: string }>;
+}): Promise<Metadata> => {
+  const index = (await props.params).index;
+  const hinoModule = await import(`@/data/hinario/${index}.json`);
+
+  return {
+    title: `${hinoModule.default.numero} · ${hinoModule.default.titulo} | Hinário Novo Cântico | IPCatolé`,
+  };
+};
 
 export default async function HinoPage({ params }: Props) {
   let hino: Hino | null = null;

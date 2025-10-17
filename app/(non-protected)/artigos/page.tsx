@@ -1,7 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Calendar, Download } from "lucide-react";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Artigos e Documentos",
+};
 // TODO: UPDATE THIS LATER
 const Artigos = () => {
   const artigos = [

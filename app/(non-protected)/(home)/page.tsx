@@ -18,6 +18,11 @@ import {
   Suggestions,
   Calendar,
 } from "./_components";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Página Inicial",
+};
 
 const Home = async () => {
   const [

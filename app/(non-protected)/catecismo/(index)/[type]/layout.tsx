@@ -1,6 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, BookOpen } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const generateMetadata = async (props: {
+  params: Promise<{ type: string }>;
+}): Promise<Metadata> => {
+  const { type } = await props.params;
+  const isShort = type === "breve";
+  return {
+    title: `${isShort ? "Breve Catecismo" : "Catecismo Maior"}`,
+  };
+};
 export default async function CatecismoLayout({
   children,
   params,

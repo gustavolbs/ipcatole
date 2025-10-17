@@ -1,5 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import SignInWithGoogle from "./_components/SignInWithGoogle";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login - Área Protegida",
+  description: "Faça login para acessar a área protegida do site.",
+};
 
 export default async function LoginPage() {
   return (

@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Metadata } from "next";
 import { use, useEffect, useState } from "react";
 
 type CatecismoItem = {
@@ -10,6 +11,7 @@ type CatecismoItem = {
   answer: string;
   refs: string;
 };
+
 export default function Catecismo({
   params,
 }: {
