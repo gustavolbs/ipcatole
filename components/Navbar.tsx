@@ -4,6 +4,7 @@ import { Menu, X, Church } from "lucide-react";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import LogoWithName from "./LogoWithName";
 
 const navItems = [
   { name: "Início", path: "/" },
@@ -29,10 +30,7 @@ const Navbar = () => {
             href="/"
             className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity"
           >
-            <Church className="h-6 w-6" />
-            <span className="font-bold text-lg">
-              Igreja Presbiteriana do Catolé
-            </span>
+            <LogoWithName />
           </Link>
 
           {/* Desktop Menu */}

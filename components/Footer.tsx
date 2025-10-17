@@ -84,8 +84,8 @@ const Footer = () => {
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} Igreja Presbiteriana. Todos os
-            direitos reservados.
+            &copy; {new Date().getFullYear()} Igreja Presbiteriana do Catolé.
+            Todos os direitos reservados.
           </p>
         </div>
       </div>
