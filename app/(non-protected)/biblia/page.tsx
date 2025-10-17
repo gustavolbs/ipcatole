@@ -4,11 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen } from "lucide-react";
 import bibliaData from "@/data/biblia.json";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Bíblia",
-};
 
 // TODO: UPDATE THIS LATER
 const Biblia = () => {
