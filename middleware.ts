@@ -33,7 +33,7 @@ export async function middleware(req: Request) {
         return NextResponse.redirect(new URL("/", req.url));
       }
 
-      // 2️⃣.2 Usuário tem privilegios (admin, conselho, presidentes)
+      // 2️⃣.2 Usuário tem privilegios (admin, conselho, presidentes, mídia)
       return NextResponse.redirect(new URL("/midia", req.url));
     }
 

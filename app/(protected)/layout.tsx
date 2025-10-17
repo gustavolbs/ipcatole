@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { createServer } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 
-const ROLES_ALLOWED = ["admin", "conselho", "presidentes"];
+const ROLES_ALLOWED = ["admin", "conselho", "presidentes", "midia"];
 
 export default async function ProtectedLayout({
   children,
@@ -31,8 +31,8 @@ export default async function ProtectedLayout({
   return (
     <>
       <div className="container 2xl:max-w-[1200px] mx-auto px-4 py-12">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <h1 className="text-2xl font-bold text-foreground mb-2">
+        <div className="flex flex-row justify-between items-center">
+          <h1 className="text-2xl font-bold text-foreground mb-2 text-balance">
             Bem vindo, {user.user_metadata.name} ({profile.role})
           </h1>
           <form action="/logout" method="post">
