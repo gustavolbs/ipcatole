@@ -1,10 +1,15 @@
 "use client";
+
 import { useState } from "react";
-import { Menu, X, Church } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import LogoWithName from "./LogoWithName";
+
+interface NavbarProps {
+  user?: string | null;
+}
 
 const navItems = [
   { name: "Início", path: "/" },
@@ -12,10 +17,9 @@ const navItems = [
   { name: "Hinário", path: "/hinario" },
   { name: "Catecismo", path: "/catecismo" },
   { name: "Artigos", path: "/artigos" },
-  { name: "Entrar", path: "/login" },
 ];
 
-const Navbar = () => {
+const Navbar = ({ user }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -45,6 +49,27 @@ const Navbar = () => {
                 </Button>
               </Link>
             ))}
+
+            {/* Botão dinâmico */}
+            {user ? (
+              <Link href="/dashboard">
+                <Button
+                  variant={isActive("/dashboard") ? "default" : "ghost"}
+                  className="font-medium"
+                >
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button
+                  variant={isActive("/login") ? "default" : "ghost"}
+                  className="font-medium"
+                >
+                  Entrar
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -73,6 +98,27 @@ const Navbar = () => {
                 </Button>
               </Link>
             ))}
+
+            {/* Botão dinâmico mobile */}
+            {user ? (
+              <Link href="/dashboard" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant={isActive("/dashboard") ? "default" : "ghost"}
+                  className="w-full justify-start font-medium"
+                >
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant={isActive("/login") ? "default" : "ghost"}
+                  className="w-full justify-start font-medium"
+                >
+                  Entrar
+                </Button>
+              </Link>
+            )}
           </div>
         )}
       </div>

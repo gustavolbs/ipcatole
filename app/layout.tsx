@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -94,7 +94,7 @@ export default function RootLayout({
 
         <TooltipProvider>
           <Sonner richColors />
-          <Navbar />
+          <NavbarWrapper />
           {children}
           <Footer />
         </TooltipProvider>
