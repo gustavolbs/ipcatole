@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Cake } from "lucide-react";
 
 type BirthdayItem = {
@@ -6,26 +6,26 @@ type BirthdayItem = {
 };
 export const Birthdays = ({ birthdays }: { birthdays: BirthdayItem[] }) => {
   return (
-    <section>
-      <div className="flex items-center gap-2 mb-6">
-        <Cake className="h-6 w-6 text-accent" />
-        <h2 className="text-3xl font-bold">Aniversariantes da Semana</h2>
-      </div>
-      <Card className="shadow-card">
-        <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {birthdays.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg"
-              >
-                <Cake className="h-5 w-5 text-accent" />
-                <span className="font-medium">{item.date}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </section>
+    <Card className="shadow-card">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Cake className="h-5 w-5 text-primary" />
+          Aniversariantes da Semana
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pt-2">
+        <div className="grid grid-cols-1 gap-2">
+          {birthdays.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg"
+            >
+              <Cake className="h-5 w-5 text-accent" />
+              <span className="font-medium">{item.date}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

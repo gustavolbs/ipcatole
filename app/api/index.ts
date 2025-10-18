@@ -5,4 +5,5 @@ export * from "./catecismo";
 export * from "./gallery";
 export * from "./notices";
 export * from "./pastoral";
+export * from "./pedidos";
 export * from "./videos";

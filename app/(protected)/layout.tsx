@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
-
-const ROLES_ALLOWED = ["admin", "conselho", "presidentes", "midia"];
+import { ROLES_ALLOWED_DASHBOARD } from "@/lib/supabase/roles";
 
 export default async function ProtectedLayout({
   children,
@@ -16,7 +15,7 @@ export default async function ProtectedLayout({
 
   const { user, profile } = userData;
 
-  if (!ROLES_ALLOWED.includes(profile?.role || "") || !profile) {
+  if (!profile?.role || !ROLES_ALLOWED_DASHBOARD.includes(profile?.role)) {
     redirect("/");
   }
 

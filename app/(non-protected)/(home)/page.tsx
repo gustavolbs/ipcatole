@@ -20,6 +20,7 @@ import {
   Calendar,
 } from "./_components";
 import { Metadata } from "next";
+import { PrayerRequests } from "./_components/PrayerRequests";
 
 export const metadata: Metadata = {
   title: "Página Inicial",
@@ -52,24 +53,31 @@ const Home = async () => {
       <Live video={video} />
 
       <div className="container 2xl:max-w-[1600px] mx-auto px-4 py-12 space-y-16">
+        {/* Pergunta do Catecismo + Devocional */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <WeeklyQuestion question={weeklyQuestion} />
+
+          <Devotional devotional={devotional} />
+
+          {/* Aniversariantes da Semana */}
+          <Birthdays birthdays={birthdays} />
+        </section>
+
         {/* Destaques de Vídeos */}
         <FeaturedVideos videos={featuredVideos} />
         {/* Avisos */}
         <Notices notices={notices} />
         {/* Galeria de Fotos */}
         <GalleryFeed feed={galleryFeed} />
-        {/* Pergunta do Catecismo + Devocional */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <WeeklyQuestion question={weeklyQuestion} />
 
-          <Devotional devotional={devotional} />
-        </section>
-        {/* Aniversariantes da Semana */}
-        <Birthdays birthdays={birthdays} />
         {/* Calendário de Eventos */}
         <Calendar events={calendar} />
-        {/* Formulário de Sugestões */}
-        <Suggestions />
+
+        {/* Pedidos de Oração + Formulário de Sugestões  */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 gap-y-10">
+          <PrayerRequests />
+          <Suggestions />
+        </section>
       </div>
     </div>
   );

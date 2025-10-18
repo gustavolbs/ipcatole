@@ -13,7 +13,7 @@ export const Notices = ({ notices }: { notices: Notice[] }) => {
   return (
     <section>
       <h2 className="text-3xl font-bold mb-6">Avisos</h2>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
         {notices.map((notice) => {
           if (notice.link) {
             return (
@@ -37,7 +37,7 @@ export const Notices = ({ notices }: { notices: Notice[] }) => {
 
 const NoticeCard = ({ notice }: { notice: Notice }) => {
   return (
-    <Card className="overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20 shadow-card w-full md:w-[300px] lg:w-[380px]">
+    <Card className="overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20 shadow-card w-full md:w-[240px] lg:w-[300px]">
       <div className="aspect-square bg-muted">
         <Image
           src={notice.image}
