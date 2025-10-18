@@ -16,9 +16,6 @@ export async function middleware(request: NextRequest) {
   const url = new URL(request.url);
   const userData = await getUserProfile();
 
-  // Rotas que queremos proteger
-  const protectedPaths = ["/midia", "/admin", "/dashboard", "/membros"];
-
   // 1️⃣ Usuário tentando acessar rota protegida sem login
   if (
     protectedPaths.some((path) => url.pathname.startsWith(path)) &&
@@ -63,3 +60,12 @@ export const config = {
     "/membros/:path*",
   ],
 };
+
+// Rotas que queremos proteger
+const protectedPaths = [
+  "/midia",
+  "/admin",
+  "/dashboard",
+  "/membros",
+  "/pedidos-oracao",
+];

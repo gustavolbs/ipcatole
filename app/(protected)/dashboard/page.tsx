@@ -1,14 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { HandHeart, HelpingHand } from "lucide-react";
-import { getPrayerRequests } from "@/app/api";
+import { HandHeart, HelpingHand, Users } from "lucide-react";
+import { getMembers, getPrayerRequests } from "@/app/api";
 import { PrayerRequest } from "../pedidos-oracao/page";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
-import { ROLES_ALLOWED_PRAYER_REQUESTS } from "@/lib/supabase/roles";
+import {
+  ROLES_ALLOWED_MEMBERS,
+  ROLES_ALLOWED_PRAYER_REQUESTS,
+} from "@/lib/supabase/roles";
 
 const Dashboard = async () => {
   const userData = await getUserProfile();
   const userRole = userData?.profile?.role;
-  const [pedidos] = await Promise.all([getPrayerRequests()]);
+  const [pedidos, membros] = await Promise.all([
+    getPrayerRequests(),
+    getMembers(),
+  ]);
 
   const metrics = [
     {
@@ -22,6 +28,12 @@ const Dashboard = async () => {
       value: pedidos.filter((pedido: PrayerRequest) => !pedido.answered).length,
       icon: HandHeart,
       whoCanSee: ROLES_ALLOWED_PRAYER_REQUESTS,
+    },
+    {
+      title: "Membros Cadastrados",
+      value: membros.length,
+      icon: Users,
+      whoCanSee: ROLES_ALLOWED_MEMBERS,
     },
   ];
 

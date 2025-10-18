@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Video } from "lucide-react";
 
@@ -18,14 +17,15 @@ export const FeaturedVideos: React.FC<{ videos: FeaturedVideo[] }> = ({
         <Video className="h-6 w-6 text-primary" />
         <h2 className="text-3xl font-bold">Destaques</h2>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+
+      {/* Scrollable container */}
+      <div className="flex gap-4 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:overflow-visible">
         {videos?.map((video) => {
-          const link = video.link;
-          const id = link.substr(link.indexOf("=") + 1);
+          const id = video.link.substr(video.link.indexOf("=") + 1);
           return (
             <Card
-              key={video.link}
-              className="overflow-hidden shadow-card hover:shadow-elegant transition-shadow"
+              key={video._id}
+              className="flex-shrink-0 snap-start w-[85%] sm:w-auto overflow-hidden shadow-card hover:shadow-elegant transition-shadow"
             >
               <div className="aspect-video bg-black max-h-48 mx-auto">
                 <iframe
@@ -39,7 +39,10 @@ export const FeaturedVideos: React.FC<{ videos: FeaturedVideo[] }> = ({
                 />
               </div>
               <CardHeader className="py-1 px-2 text-center mx-auto max-w-[90%]">
-                <CardTitle className="text-md truncate" title={video.title}>
+                <CardTitle
+                  className="text-sm md:text-base truncate"
+                  title={video.title}
+                >
                   {video.title}
                 </CardTitle>
               </CardHeader>

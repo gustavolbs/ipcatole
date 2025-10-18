@@ -9,26 +9,32 @@ export type Notice = {
   title: string;
   link?: string;
 };
+
 export const Notices = ({ notices }: { notices: Notice[] }) => {
   return (
-    <section>
+    <section className="animate-fade-in">
       <h2 className="text-3xl font-bold mb-6">Avisos</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+      <div className="flex gap-4 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:overflow-visible">
         {notices.map((notice) => {
-          if (notice.link) {
-            return (
-              <a
-                key={notice._id}
-                href={notice.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <NoticeCard notice={notice} />
-              </a>
-            );
-          }
-
-          return <NoticeCard key={notice._id} notice={notice} />;
+          const card = <NoticeCard key={notice._id} notice={notice} />;
+          return notice.link ? (
+            <a
+              key={notice._id}
+              href={notice.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 snap-start w-[85%] sm:w-auto"
+            >
+              {card}
+            </a>
+          ) : (
+            <div
+              key={notice._id}
+              className="flex-shrink-0 snap-start w-[85%] sm:w-auto"
+            >
+              {card}
+            </div>
+          );
         })}
       </div>
     </section>
@@ -47,15 +53,15 @@ const NoticeCard = ({ notice }: { notice: Notice }) => {
           height={380}
         />
       </div>
-      <CardHeader>
+      <CardHeader className="py-3 px-5">
         <CardTitle className="flex items-center gap-2">
-          <CalendarIcon className="h-5 w-5 text-primary" />
-          {notice.title}
+          <CalendarIcon className="h-5 w-5 text-primary hidden md:block" />
+          <p className="text-base line-clamp-1">{notice.title}</p>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-4 px-5">
         <p
-          className="text-muted-foreground line-clamp-3"
+          className="text-muted-foreground line-clamp-3 text-xs md:text-sm"
           title={notice.description}
         >
           {notice.description}

@@ -3,10 +3,10 @@ import {
   getFeaturedVideos,
   getWeeklyQuestion,
   getDevotional,
-  getBirthdays,
   getGalleryFeed,
   getNotices,
   getCalendarEvents,
+  getAniversariantesSemana,
 } from "@/app/api";
 import {
   Live,
@@ -41,7 +41,7 @@ const Home = async () => {
     getFeaturedVideos(),
     getWeeklyQuestion(),
     getDevotional(),
-    getBirthdays(),
+    getAniversariantesSemana(),
     getGalleryFeed(),
     getNotices(),
     getCalendarEvents(),
@@ -53,31 +53,32 @@ const Home = async () => {
       <Live video={video} />
 
       <div className="container 2xl:max-w-[1600px] mx-auto px-4 py-12 space-y-16">
-        {/* Pergunta do Catecismo + Devocional */}
+        {/* Pergunta do Catecismo + Devocional + Aniversariantes */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <WeeklyQuestion question={weeklyQuestion} />
 
           <Devotional devotional={devotional} />
 
-          {/* Aniversariantes da Semana */}
           <Birthdays birthdays={birthdays} />
         </section>
 
-        {/* Destaques de Vídeos */}
-        <FeaturedVideos videos={featuredVideos} />
         {/* Avisos */}
         <Notices notices={notices} />
-        {/* Galeria de Fotos */}
-        <GalleryFeed feed={galleryFeed} />
-
-        {/* Calendário de Eventos */}
-        <Calendar events={calendar} />
 
         {/* Pedidos de Oração + Formulário de Sugestões  */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 gap-y-10">
           <PrayerRequests />
           <Suggestions />
         </section>
+
+        {/* Galeria de Fotos */}
+        <GalleryFeed feed={galleryFeed} />
+
+        {/* Calendário de Eventos */}
+        <Calendar events={calendar} />
+
+        {/* Destaques de Vídeos */}
+        <FeaturedVideos videos={featuredVideos} />
       </div>
     </div>
   );

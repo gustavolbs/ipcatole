@@ -19,3 +19,4 @@ export const ROLES_ALLOWED_PRAYER_REQUESTS: Role[] = [
   "council",
   "priest",
 ];
+export const ROLES_ALLOWED_MEMBERS: Role[] = ["admin", "council", "priest"];

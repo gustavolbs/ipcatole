@@ -53,3 +53,11 @@ export const filterEventsByDate = (
 export const formatDisplayDate = (date: string) => {
   return dayjs.tz(date, TIMEZONE).format("DD/MM (dddd)");
 };
+
+export const formatDate = (date: string) => {
+  return dayjs.tz(date, TIMEZONE).format("DD/MM/YYYY");
+};
+
+export const formatAnniversaries = (date: string) => {
+  return dayjs.tz(date, TIMEZONE).format("DD/MM");
+};

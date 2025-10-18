@@ -4,13 +4,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BookOpen, Video, FileText, Music, HandHeart } from "lucide-react";
+import { Video, HandHeart, Users } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
 import {
   Role,
   ROLES_ALLOWED_DASHBOARD,
+  ROLES_ALLOWED_MEMBERS,
   ROLES_ALLOWED_PRAYER_REQUESTS,
 } from "@/lib/supabase/roles";
 
@@ -44,6 +45,14 @@ const quickLinks: Links = [
     path: "/pedidos-oracao",
     color: "text-accent",
     enabledRoles: ROLES_ALLOWED_PRAYER_REQUESTS,
+  },
+  {
+    title: "Gestão de membros",
+    description: "Acessar e gerenciar os membros da igreja",
+    icon: Users,
+    path: "/membros",
+    color: "text-primary",
+    enabledRoles: ROLES_ALLOWED_MEMBERS,
   },
 ];
 
