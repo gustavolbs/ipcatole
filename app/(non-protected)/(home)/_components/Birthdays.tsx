@@ -36,7 +36,15 @@ const sortByDayMonth = (a: AnniversaryItem, b: AnniversaryItem) => {
   return getMD(aDate) - getMD(bDate);
 };
 
-export const Birthdays = ({ birthdays }: { birthdays: AnniversaryItem[] }) => {
+export const Birthdays = ({
+  birthdays,
+  start,
+  end,
+}: {
+  birthdays: AnniversaryItem[];
+  start: string;
+  end: string;
+}) => {
   const sortedBirthdays = [...birthdays].sort(sortByDayMonth);
 
   return (
@@ -46,6 +54,9 @@ export const Birthdays = ({ birthdays }: { birthdays: AnniversaryItem[] }) => {
           <Cake className="h-5 w-5 text-primary" />
           Aniversariantes da Semana
         </CardTitle>
+        <small>
+          ({start} à {end})
+        </small>
       </CardHeader>
       <CardContent className="pt-2">
         <div className="grid grid-cols-1 gap-2">

@@ -23,11 +23,18 @@ export const getAniversariantesSemana = async () => {
 
   // Domingo da semana atual
   const sunday = today.startOf("week"); // dayjs considera domingo como início da semana
-  // Sábado da semana atual
-  const saturday = sunday.add(6, "day");
+  // Domingo da semana anterior
+  const prevSunday = sunday.subtract(7, "day");
 
-  const start = sunday.format("YYYY-MM-DD");
-  const end = saturday.format("YYYY-MM-DD");
+  // start deve ser o domingo anterior e end o domingo atual
+  const start = prevSunday.format("YYYY-MM-DD");
+  const end = sunday.format("YYYY-MM-DD");
 
-  return getAniversariantes(start, end);
+  const data = await getAniversariantes(start, end);
+
+  return {
+    start: prevSunday.format("DD/MM/YYYY"),
+    end: sunday.format("DD/MM/YYYY"),
+    data,
+  };
 };

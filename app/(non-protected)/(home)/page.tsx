@@ -59,7 +59,11 @@ const Home = async () => {
 
           <Devotional devotional={devotional} />
 
-          <Birthdays birthdays={birthdays} />
+          <Birthdays
+            start={birthdays.start}
+            end={birthdays.end}
+            birthdays={birthdays.data}
+          />
         </section>
 
         {/* Avisos */}
