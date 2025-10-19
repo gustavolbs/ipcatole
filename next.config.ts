@@ -7,18 +7,11 @@ const nextConfig: NextConfig = {
     {
       source: "/(.*)",
       headers: [
-        // {
-        //   key: "Cache-Control",
-        //   value:
-        //     "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
-        // },
-        // TODO: desabilitar cache por enquanto
         {
           key: "Cache-Control",
-          value: "no-store, no-cache, must-revalidate, proxy-revalidate",
+          value:
+            "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
         },
-        { key: "Pragma", value: "no-cache" },
-        { key: "Expires", value: "0" },
       ],
     },
     // API: nunca cachear

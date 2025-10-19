@@ -15,10 +15,7 @@ export async function getYouTubeEmbedUrl(): Promise<YouTubeVideo> {
     const liveRes = await fetch(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${API_KEY}`,
       {
-        cache: "force-cache",
-        next: {
-          revalidate: 3600, // Revalida a cada 1 hora
-        },
+        cache: "no-store",
       }
     );
     const liveData = await liveRes.json();
@@ -32,8 +29,13 @@ export async function getYouTubeEmbedUrl(): Promise<YouTubeVideo> {
     }
 
     // 🟢 Caso não tenha live, pega o último vídeo publicado
-    const channelVideosPage = `https://www.youtube.com/channel/${CHANNEL_ID}/videos`;
-    const res2 = await fetch(channelVideosPage);
+    const res2 = await fetch(
+      `https://www.youtube.com/channel/${CHANNEL_ID}/videos`,
+      {
+        cache: "force-cache",
+        next: { revalidate: 3600 },
+      }
+    );
     const html2 = await res2.text();
 
     const match = html2.match(/"videoId":"(.*?)"/);
