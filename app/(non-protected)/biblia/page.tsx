@@ -7,7 +7,7 @@ import Link from "next/link";
 export type Book = {
   abbrev: string;
   chapters: string[][];
-  name: string[];
+  name: string;
 };
 
 const Biblia = () => {
