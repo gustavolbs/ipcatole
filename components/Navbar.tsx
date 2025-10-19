@@ -17,6 +17,7 @@ const navItems = [
   { name: "Hinário", path: "/hinario" },
   { name: "Catecismo", path: "/catecismo" },
   { name: "Artigos", path: "/artigos" },
+  { name: "Escalas", path: "https://wmanagement.vercel.app/" },
 ];
 
 const Navbar = ({ user }: NavbarProps) => {
