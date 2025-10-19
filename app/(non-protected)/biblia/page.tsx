@@ -10,6 +10,8 @@ export type Book = {
   name: string;
 };
 
+export const dynamic = "force-static";
+
 const Biblia = () => {
   const velhoTestamento = (bibliaData as Book[]).slice(0, 39);
   const novoTestamento = (bibliaData as Book[]).slice(39);

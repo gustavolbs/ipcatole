@@ -5,11 +5,34 @@ import bibliaData from "@/data/ARA.json";
 import Link from "next/link";
 import { Book } from "../page";
 
-const Livro = async (props: { params: Promise<{ abbrev: string }> }) => {
-  const abbrev = (await props.params).abbrev;
-  const selected = (bibliaData as Book[]).find(
+export const dynamic = "force-static";
+
+// Gera todas as rotas estáticas baseadas nos livros da Bíblia
+export async function generateStaticParams() {
+  const books = bibliaData as Book[];
+  return books.map((book) => ({
+    abbrev: book.abbrev.toLowerCase(),
+  }));
+}
+
+type LivroProps = {
+  params: { abbrev: string };
+};
+
+export default function Livro({ params }: LivroProps) {
+  const { abbrev } = params;
+  const books = bibliaData as Book[];
+  const selected = books.find(
     (book) => book.abbrev.toLowerCase() === abbrev.toLowerCase()
   );
+
+  if (!selected) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Livro não encontrado.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12">
@@ -26,16 +49,17 @@ const Livro = async (props: { params: Promise<{ abbrev: string }> }) => {
                 ← Voltar aos livros
               </Button>
             </Link>
+
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-2xl">{selected?.name}</CardTitle>
+                <CardTitle className="text-2xl">{selected.name}</CardTitle>
                 <p className="text-muted-foreground">
-                  {selected?.chapters.length} capítulos
+                  {selected.chapters.length} capítulos
                 </p>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
-                  {selected?.chapters.map((_, idx) => {
+                  {selected.chapters.map((_, idx) => {
                     const cap = idx + 1;
                     return (
                       <Link href={`/biblia/${abbrev}/${cap}`} key={cap}>
@@ -53,6 +77,4 @@ const Livro = async (props: { params: Promise<{ abbrev: string }> }) => {
       </div>
     </div>
   );
-};
-
-export default Livro;
+}
