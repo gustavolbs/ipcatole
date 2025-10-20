@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Video, HandHeart, Users } from "lucide-react";
+import { Video, HandHeart, Users, Send } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
@@ -51,6 +51,14 @@ const quickLinks: Links = [
     description: "Acessar e gerenciar os membros da igreja",
     icon: Users,
     path: "/membros",
+    color: "text-primary",
+    enabledRoles: ROLES_ALLOWED_MEMBERS,
+  },
+  {
+    title: "Notificações",
+    description: "Envie notificações para os usuários",
+    icon: Send,
+    path: "/notificacoes",
     color: "text-primary",
     enabledRoles: ROLES_ALLOWED_MEMBERS,
   },

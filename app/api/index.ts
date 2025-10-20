@@ -4,6 +4,8 @@ export * from "./catecismo";
 export * from "./gallery";
 export * from "./membros";
 export * from "./notices";
+export * from "./notify";
 export * from "./pastoral";
 export * from "./pedidos";
+export * from "./subscribeTopic";
 export * from "./videos";

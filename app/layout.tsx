@@ -5,7 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import Script from "next/script";
+import NotificationPermission from "@/lib/firebase/NotificationPermission";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,37 +65,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <meta name="version" content={PACKAGE.version} key="meta:name:version" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1"
-      />
+      <head>
+        <meta
+          name="version"
+          content={PACKAGE.version}
+          key="meta:name:version"
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Script id="remove-old-sw" strategy="afterInteractive">
-          {`
-            if ('serviceWorker' in navigator) {
-              navigator.serviceWorker.getRegistrations().then(registrations => {
-                for (const registration of registrations) {
-                  registration.unregister();
-                }
-              });
-              if (window.caches) {
-                caches.keys().then(names => {
-                  for (const name of names) {
-                    caches.delete(name);
-                  }
-                });
-              }
-            }
-          `}
-        </Script>
-
         <TooltipProvider>
           <Sonner richColors />
           <NavbarWrapper />
           {children}
+          <NotificationPermission />
           <Footer />
         </TooltipProvider>
       </body>
