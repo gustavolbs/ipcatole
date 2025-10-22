@@ -5,7 +5,6 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import NotificationPermission from "@/lib/firebase/NotificationPermission";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -83,7 +82,6 @@ export default function RootLayout({
           <Sonner richColors />
           <NavbarWrapper />
           {children}
-          <NotificationPermission />
           <Footer />
         </TooltipProvider>
       </body>

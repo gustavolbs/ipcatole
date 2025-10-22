@@ -10,7 +10,8 @@ import {
 
 const Dashboard = async () => {
   const userData = await getUserProfile();
-  const userRole = userData?.profile?.role;
+  const userRoles = userData?.profile?.roles || [];
+
   const [pedidos, membros] = await Promise.all([
     getPrayerRequests(),
     getMembers(),
@@ -21,34 +22,35 @@ const Dashboard = async () => {
       title: "Pedidos de Oração",
       value: pedidos.length,
       icon: HelpingHand,
-      whoCanSee: ROLES_ALLOWED_PRAYER_REQUESTS,
+      allowedRoles: ROLES_ALLOWED_PRAYER_REQUESTS,
     },
     {
       title: "Pedidos de Oração (em aberto)",
       value: pedidos.filter((pedido: PrayerRequest) => !pedido.answered).length,
       icon: HandHeart,
-      whoCanSee: ROLES_ALLOWED_PRAYER_REQUESTS,
+      allowedRoles: ROLES_ALLOWED_PRAYER_REQUESTS,
     },
     {
       title: "Membros Cadastrados",
       value: membros.length,
       icon: Users,
-      whoCanSee: ROLES_ALLOWED_MEMBERS,
+      allowedRoles: ROLES_ALLOWED_MEMBERS,
     },
   ];
+
+  // Filtra apenas as métricas visíveis para o usuário atual
+  const visibleMetrics = metrics.filter((metric) =>
+    metric.allowedRoles.some((role) => userRoles.includes(role))
+  );
+
+  if (visibleMetrics.length === 0) return null;
 
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-bold text-foreground mb-4">Métricas</h2>
-      {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {metrics.map((metric, index) => {
-          if (
-            metric.whoCanSee &&
-            (!userRole || !metric.whoCanSee.includes(userRole))
-          ) {
-            return null;
-          }
+        {visibleMetrics.map((metric, index) => {
+          const Icon = metric.icon;
           return (
             <Card
               key={index}
@@ -58,7 +60,7 @@ const Dashboard = async () => {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {metric.title}
                 </CardTitle>
-                <metric.icon className="h-4 w-4 text-muted-foreground" />
+                <Icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-foreground">

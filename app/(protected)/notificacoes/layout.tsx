@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
-import { ROLES_ALLOWED_PRAYER_REQUESTS } from "@/lib/supabase/roles";
+import { ROLES_ALLOWED_DASHBOARD } from "@/lib/supabase/roles";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -21,8 +21,10 @@ export default async function NotificationsLayout({
   // TODO: REVIEW THIS
   if (
     !userData?.user ||
-    !userData.profile?.role ||
-    !ROLES_ALLOWED_PRAYER_REQUESTS.includes(userData.profile?.role)
+    !userData.profile?.roles ||
+    !userData.profile?.roles.some((role) =>
+      ROLES_ALLOWED_DASHBOARD.includes(role)
+    )
   ) {
     redirect("/dashboard");
   }

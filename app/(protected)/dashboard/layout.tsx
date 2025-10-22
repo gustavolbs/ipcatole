@@ -4,11 +4,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Video, HandHeart, Users, Send } from "lucide-react";
+import { Video, HandHeart, Users, Cog, Mail } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getUserProfile } from "@/lib/supabase/getUserProfile";
 import {
+  ALL_ROLES,
   Role,
   ROLES_ALLOWED_DASHBOARD,
   ROLES_ALLOWED_MEMBERS,
@@ -55,12 +56,20 @@ const quickLinks: Links = [
     enabledRoles: ROLES_ALLOWED_MEMBERS,
   },
   {
-    title: "Notificações",
-    description: "Envie notificações para os usuários",
-    icon: Send,
+    title: "Emails",
+    description: "Envie emails para os usuários",
+    icon: Mail,
     path: "/notificacoes",
     color: "text-primary",
-    enabledRoles: ROLES_ALLOWED_MEMBERS,
+    enabledRoles: ROLES_ALLOWED_DASHBOARD,
+  },
+  {
+    title: "Preferências",
+    description: "Ajustes relacionados a sua conta",
+    icon: Cog,
+    path: "/preferences",
+    color: "text-primary",
+    enabledRoles: ALL_ROLES,
   },
 ];
 
@@ -70,7 +79,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const userData = await getUserProfile();
-  const userRole = userData?.profile?.role;
+  const userRoles = userData?.profile?.roles;
 
   return (
     <div className="min-h-screen bg-background">
@@ -93,8 +102,9 @@ export default async function DashboardLayout({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickLinks.map((link, index) => {
               if (
-                !userRole ||
-                (link.enabledRoles && !link.enabledRoles.includes(userRole))
+                !userRoles ||
+                (link.enabledRoles &&
+                  !userRoles?.some((role) => link.enabledRoles?.includes(role)))
               ) {
                 return null;
               }

@@ -1,9 +1,33 @@
-import { Church, Instagram, Youtube, Music, MapPin, Clock } from "lucide-react";
+import {
+  Church,
+  Instagram,
+  Youtube,
+  Music,
+  MapPin,
+  Clock,
+  Mail,
+} from "lucide-react";
+import SubscribeForm from "./SubscribeForm";
 
 const Footer = () => {
   return (
     <footer className="bg-white border-t mt-20">
       <div className="container mx-auto px-4 py-12">
+        {/* Email Newsletter */}
+        <div className="mb-12 text-center max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Mail className="h-5 w-5 text-primary" />
+            <h3 className="font-bold text-lg">Fique Por Dentro</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Receba atualizações, escalas e eventos direto no seu email. Faça
+            parte da nossa comunidade!
+          </p>
+
+          {/* 🔹 Componente client-side aqui */}
+          <SubscribeForm />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Sobre */}
           <div>

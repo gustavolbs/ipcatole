@@ -19,10 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { sendNotification } from "@/app/api";
+import { sendEmail } from "@/app/api/sendEmail";
+import { ALL_ROLES, Role, ROLES_NAMES } from "@/lib/supabase/roles";
 
 const NotificationPage = () => {
-  const [topic, setTopic] = useState("igreja");
+  const [topic, setTopic] = useState<Role>("user");
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const NotificationPage = () => {
     setLoading(true);
 
     try {
-      await sendNotification(topic, title, message);
+      await sendEmail(topic, title, message);
 
       toast.success("✅ Notificação enviada com sucesso!");
       setMessage("");
@@ -56,10 +57,9 @@ const NotificationPage = () => {
       <div className="container mx-auto px-4 py-8 max-w-xl">
         <Card className="shadow-card">
           <CardHeader>
-            <CardTitle>Enviar Notificação 📢</CardTitle>
+            <CardTitle>Enviar Email 📢</CardTitle>
             <CardDescription>
-              Envie notificações via OneSignal para usuários inscritos em cada
-              tópico.
+              Envie emails para usuários inscritos em cada uma das listas.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -71,24 +71,27 @@ const NotificationPage = () => {
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Digite o título da notificação"
+                  placeholder="Digite o título do email"
                   required
                 />
               </div>
 
               {/* Tópico */}
               <div className="grid gap-2">
-                <Label htmlFor="topic">Tópico *</Label>
+                <Label htmlFor="topic">Lista de emails *</Label>
                 <Select
                   value={topic}
-                  onValueChange={(value) => setTopic(value)}
+                  onValueChange={(value: Role) => setTopic(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione um tópico" />
+                    <SelectValue placeholder="Selecione para qual lista enviar" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="igreja">Igreja</SelectItem>
-                    <SelectItem value="louvor">Louvor</SelectItem>
+                    {ALL_ROLES.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {ROLES_NAMES[role]}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

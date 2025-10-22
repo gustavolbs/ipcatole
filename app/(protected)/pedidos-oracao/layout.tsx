@@ -20,8 +20,10 @@ export default async function PedidosOracaoLayout({
 
   if (
     !userData?.user ||
-    !userData.profile?.role ||
-    !ROLES_ALLOWED_PRAYER_REQUESTS.includes(userData.profile?.role)
+    !userData.profile?.roles ||
+    !userData.profile?.roles.some((role) =>
+      ROLES_ALLOWED_PRAYER_REQUESTS.includes(role)
+    )
   ) {
     redirect("/dashboard");
   }
