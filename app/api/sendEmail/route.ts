@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { createServer } from "@/lib/supabase/server";
 
+export const runtime = "nodejs"; // ⚠️ necessário para Gmail (não roda em Edge)
+
+// Busca emails do tópico
 async function getEmailsForTopic(
   topic: string
 ): Promise<{ endpoint: string; name: string }[]> {
@@ -19,21 +22,37 @@ async function getEmailsForTopic(
   return data ?? [];
 }
 
-// Envio em paralelo com limite seguro (5 simultâneos)
+// Envio em paralelo com limite de 5
 async function sendEmailsInBatches(
   emails: { endpoint: string; name: string }[],
   title: string,
   message: string
 ) {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
 
-  const batchSize = 5; // máximo de e-mails simultâneos
+  // 🔍 Verifica conexão SMTP (importante na Vercel)
+  await new Promise((resolve, reject) => {
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error("Erro na verificação SMTP:", error);
+        reject(error);
+      } else {
+        console.log("✅ Servidor SMTP pronto:", success);
+        resolve(success);
+      }
+    });
+  });
+
+  const batchSize = 5;
+
   for (let i = 0; i < emails.length; i += batchSize) {
     const batch = emails.slice(i, i + batchSize);
 
@@ -59,6 +78,8 @@ async function sendEmailsInBatches(
       await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
+
+  console.log(`🎉 Envio concluído (${emails.length} destinatários)`);
 }
 
 export async function POST(req: Request) {
@@ -84,15 +105,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ responde ao cliente imediatamente
-    setImmediate(() => {
-      sendEmailsInBatches(emails, title, message)
-        .then(() =>
-          console.log(`🎉 Envio finalizado: ${emails.length} destinatários`)
-        )
-        .catch((err) => console.error("Erro no envio em background:", err));
-    });
+    // 💡 dispara a Promise de envio, mas sem bloquear a resposta
+    sendEmailsInBatches(emails, title, message).catch((err) =>
+      console.error("Erro no envio:", err)
+    );
 
+    // retorna rápido ao cliente
     return NextResponse.json({
       message: `Envio iniciado para ${emails.length} destinatário(s).`,
     });
