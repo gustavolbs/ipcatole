@@ -23,7 +23,8 @@ export default function Livro({ params }: LivroProps) {
   const { abbrev } = params;
   const books = bibliaData as Book[];
   const selected = books.find(
-    (book) => book.abbrev.toLowerCase() === abbrev.toLowerCase()
+    (book) =>
+      book.abbrev.toLowerCase() === decodeURIComponent(abbrev).toLowerCase()
   );
 
   if (!selected) {

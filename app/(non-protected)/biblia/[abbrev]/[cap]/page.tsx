@@ -28,7 +28,8 @@ export default function Capitulo({ params }: CapituloProps) {
 
   const books = bibliaData as Book[];
   const selectedBook = books.find(
-    (book) => book.abbrev.toLowerCase() === abbrev.toLowerCase()
+    (book) =>
+      book.abbrev.toLowerCase() === decodeURIComponent(abbrev).toLowerCase()
   );
   const selectedChapter = selectedBook?.chapters[Number(cap) - 1];
 
