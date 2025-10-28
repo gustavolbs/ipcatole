@@ -7,18 +7,17 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Notificações",
-  description: "Envie notificações para a igreja.",
+  title: "Enviar Emails",
+  description: "Envie emails para a igreja.",
 };
 
-export default async function NotificationsLayout({
+export default async function EmailsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const userData = await getUserProfile();
 
-  // TODO: REVIEW THIS
   if (
     !userData?.user ||
     !userData.profile?.roles ||

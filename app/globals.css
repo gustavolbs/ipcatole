@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
+/* ---------------------------
+   Design system (valores HSL)
+   - mantemos as variáveis como "h s% l%" para usar com hsl(var(--...))
+   --------------------------- */
 @layer base {
   :root {
     --background: 40 35% 92%;
@@ -50,71 +50,8 @@ All colors MUST be HSL.
     );
     --shadow-elegant: 0 10px 40px -10px hsl(150 55% 42% / 0.3);
     --shadow-card: 0 4px 12px hsl(150 40% 25% / 0.15);
-
-    --sidebar-background: 150 50% 35%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 150 60% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 45% 30%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 150 40% 28%;
-    --sidebar-ring: 150 60% 45%;
   }
 
-  .dark {
-    --background: 150 40% 12%;
-    --foreground: 40 30% 88%;
-
-    --card: 150 35% 16%;
-    --card-foreground: 40 30% 88%;
-
-    --popover: 150 35% 16%;
-    --popover-foreground: 40 30% 88%;
-
-    --primary: 150 60% 50%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 40 55% 60%;
-    --secondary-foreground: 150 40% 12%;
-
-    --muted: 150 25% 22%;
-    --muted-foreground: 150 15% 70%;
-
-    --accent: 150 65% 48%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 150 25% 25%;
-    --input: 150 25% 25%;
-    --ring: 150 60% 50%;
-
-    --gradient-primary: linear-gradient(
-      135deg,
-      hsl(150 60% 50%),
-      hsl(150 65% 48%)
-    );
-    --gradient-hero: linear-gradient(
-      180deg,
-      hsl(150 45% 20% / 0.95),
-      hsl(150 40% 25% / 0.95)
-    );
-    --shadow-elegant: 0 10px 40px -10px hsl(150 60% 50% / 0.4);
-    --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.4);
-
-    --sidebar-background: 150 45% 15%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 150 60% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 35% 20%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 150 30% 18%;
-    --sidebar-ring: 150 60% 50%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
@@ -177,24 +114,286 @@ All colors MUST be HSL.
       transform: translateY(0);
     }
   }
-}
 
-@layer utilities {
-  /* Chrome, Safari and Opera */
+  /* scrollbar hidden */
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
-
-  /* Firefox */
   .scrollbar-hidden {
     scrollbar-width: none;
-  }
-
-  /* IE and Edge */
-  .scrollbar-hidden {
     -ms-overflow-style: none;
   }
 }
+
+/* ------------------------------
+   TipTap / ProseMirror — Styles
+   - Use wrapper ".rich-editor" no componente React para garantir especificidade
+   ------------------------------ */
+
+/* Base prose (aplicado ao wrapper .rich-editor) */
+.rich-editor .prose,
+.rich-editor .prose-sm {
+  max-width: 100%;
+  color: hsl(var(--foreground));
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+
+/* ProseMirror container */
+.rich-editor .ProseMirror {
+  min-height: 200px;
+  outline: none;
+  line-height: 1.6;
+  caret-color: hsl(var(--foreground));
+  word-wrap: break-word;
+  font-size: 0.975rem;
+}
+
+/* Paragraphs */
+.rich-editor .ProseMirror p {
+  margin: 0 0 1rem;
+  color: hsl(var(--foreground));
+  font-weight: 400;
+}
+
+/* Headings (H1..H4) — especificidade maior (.rich-editor .ProseMirror h1) */
+.rich-editor .ProseMirror h1 {
+  font-size: 1.875rem; /* 30px */
+  line-height: 1.15;
+  margin: 0.75rem 0 0.75rem;
+  font-weight: 700;
+  color: hsl(210 30% 8%); /* um slate escuro */
+  letter-spacing: -0.01em;
+}
+
+.rich-editor .ProseMirror h2 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.2;
+  margin: 0.6rem 0 0.6rem;
+  font-weight: 700;
+  color: hsl(210 30% 8%);
+}
+
+.rich-editor .ProseMirror h3 {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.25;
+  margin: 0.5rem 0 0.5rem;
+  font-weight: 600;
+  color: hsl(210 30% 8%);
+}
+
+.rich-editor .ProseMirror h4 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.3;
+  margin: 0.4rem 0 0.4rem;
+  font-weight: 600;
+  color: hsl(210 30% 8%);
+}
+
+/* Strong / Em / Strike */
+.rich-editor .ProseMirror strong,
+.rich-editor .ProseMirror b {
+  font-weight: 700;
+  color: hsl(210 30% 8%);
+}
+.rich-editor .ProseMirror em,
+.rich-editor .ProseMirror i {
+  font-style: italic;
+  color: hsl(214 8% 40%);
+}
+.rich-editor .ProseMirror s,
+.rich-editor .ProseMirror del {
+  text-decoration: line-through;
+  color: hsl(214 8% 45%);
+}
+
+/* Links */
+.rich-editor .ProseMirror a {
+  color: hsl(216 85% 40%); /* blue */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.12s ease;
+}
+.rich-editor .ProseMirror a:hover {
+  color: hsl(217 73% 25%);
+}
+.rich-editor .ProseMirror a:focus {
+  outline: 2px solid color-mix(in srgb, hsl(216 85% 40%) 14%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Horizontal rule */
+.rich-editor .ProseMirror hr {
+  border: none;
+  height: 1px;
+  background: color-mix(in srgb, hsl(var(--border)) 80%, white);
+  margin: 1.5rem 0;
+}
+
+/* Blockquote */
+.rich-editor .ProseMirror blockquote {
+  border-left: 4px solid color-mix(in srgb, hsl(var(--border)) 80%, white);
+  background: color-mix(in srgb, hsl(var(--card)) 92%, white);
+  padding: 0.6rem 1rem;
+  margin: 0 0 1rem;
+  color: hsl(214 8% 40%);
+  font-style: italic;
+  border-radius: 6px;
+}
+
+/* Inline code */
+.rich-editor .ProseMirror code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Courier New", monospace;
+  font-size: 0.87em;
+  background: color-mix(in srgb, hsl(var(--card)) 92%, white);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+}
+
+/* Code blocks / pre */
+.rich-editor .ProseMirror pre {
+  background: color-mix(in srgb, hsl(var(--card)) 90%, white);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow: auto;
+  margin: 0 0 1rem;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+.rich-editor .ProseMirror pre code {
+  background: transparent;
+  padding: 0;
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+/* Tables */
+.rich-editor .ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  overflow: auto;
+}
+.rich-editor .ProseMirror th,
+.rich-editor .ProseMirror td {
+  border: 1px solid color-mix(in srgb, hsl(var(--border)) 80%, white);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.95rem;
+}
+.rich-editor .ProseMirror th {
+  background: color-mix(in srgb, hsl(var(--card)) 92%, white);
+  font-weight: 600;
+}
+
+/* Lists (corrigido: padding e marcador) */
+.rich-editor .ProseMirror ul,
+.rich-editor .ProseMirror ol {
+  margin: 0 0 1rem 1.4rem;
+  padding: 0;
+  list-style-position: outside;
+}
+.rich-editor .ProseMirror ul li,
+.rich-editor .ProseMirror ol li {
+  margin: 0.35rem 0;
+  padding: 0;
+  line-height: 1.6;
+  font-size: 0.97rem;
+}
+.rich-editor .ProseMirror ul li::marker,
+.rich-editor .ProseMirror ol li::marker {
+  color: hsl(var(--muted-foreground));
+}
+
+/* nested lists */
+.rich-editor .ProseMirror ul ul,
+.rich-editor .ProseMirror ol ol,
+.rich-editor .ProseMirror ul ol,
+.rich-editor .ProseMirror ol ul {
+  margin-left: 1rem;
+}
+
+/* Images & Figures */
+.rich-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.06);
+  object-fit: contain;
+}
+
+/* figure + caption */
+.rich-editor .ProseMirror figure {
+  display: block;
+  margin: 1rem 0;
+}
+.rich-editor .ProseMirror figcaption {
+  font-size: 0.85rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* floated images */
+.rich-editor .ProseMirror figure[data-align="left"] img,
+.rich-editor .ProseMirror img[data-align="left"] {
+  float: left;
+  margin-right: 1rem;
+  max-width: 45%;
+}
+.rich-editor .ProseMirror figure[data-align="right"] img,
+.rich-editor .ProseMirror img[data-align="right"] {
+  float: right;
+  margin-left: 1rem;
+  max-width: 45%;
+}
+
+/* Text align helpers */
+.rich-editor .ProseMirror [style*="text-align: center"] {
+  text-align: center;
+}
+.rich-editor .ProseMirror [style*="text-align: right"] {
+  text-align: right;
+}
+.rich-editor .ProseMirror [style*="text-align: left"] {
+  text-align: left;
+}
+.rich-editor .ProseMirror [style*="text-align: justify"] {
+  text-align: justify;
+}
+
+/* Selection */
+.rich-editor .ProseMirror ::selection {
+  background: rgba(37, 99, 235, 0.12);
+}
+
+/* Placeholder helper (quando usar Placeholder extension) */
+.rich-editor .ProseMirror.is-editor-empty p:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  height: 0;
+}
+
+/* Small screens */
+@media (max-width: 640px) {
+  .rich-editor .ProseMirror h1 {
+    font-size: 1.5rem;
+  }
+  .rich-editor .ProseMirror h2 {
+    font-size: 1.25rem;
+  }
+}
+
 @media (max-width: 768px) {
   .fc-calendar {
     font-size: 0.8rem; /* texto menor */

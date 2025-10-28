@@ -59,7 +59,7 @@ const quickLinks: Links = [
     title: "Emails",
     description: "Envie emails para os usuários",
     icon: Mail,
-    path: "/notificacoes",
+    path: "/enviar-emails",
     color: "text-primary",
     enabledRoles: ROLES_ALLOWED_DASHBOARD,
   },

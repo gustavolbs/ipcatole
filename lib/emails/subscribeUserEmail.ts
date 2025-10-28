@@ -2,7 +2,7 @@
 import { sendEmail } from "@/app/api";
 import { createClient } from "../supabase/client";
 import { getOneUserProfile } from "../supabase/getUserProfile";
-import { WelcomeEmail } from "./templates/welcome-email";
+import { WelcomeEmail } from "./templates";
 import { ALL_ROLES, Role } from "../supabase/roles";
 
 export const subscribeUserEmail = async (email: string) => {

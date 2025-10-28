@@ -37,7 +37,7 @@ async function sendEmailsInBatches(
     const batch = emails.slice(i, i + batchSize);
 
     const batchData = batch.map(({ endpoint: email, name }) => ({
-      from: `"IPCatolé" <${process.env.RESEND_USER}>`,
+      from: `IPCatolé <${process.env.RESEND_USER}>`,
       to: email,
       subject: title || "Notificação IPCatolé",
       html: message,

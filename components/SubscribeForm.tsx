@@ -3,8 +3,8 @@
 import { useState, useTransition } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { subscribeUserEmail } from "@/lib/mailersend/subscribeUserEmail";
 import { toast } from "sonner";
+import { subscribeUserEmail } from "@/lib/emails/subscribeUserEmail";
 
 const SubscribeForm = () => {
   const [email, setEmail] = useState("");
