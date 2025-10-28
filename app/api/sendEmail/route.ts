@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { createServer } from "@/lib/supabase/server";
 
-export const runtime = "nodejs"; // ⚠️ necessário para Gmail (não roda em Edge)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Busca emails do tópico
 async function getEmailsForTopic(
@@ -22,64 +22,55 @@ async function getEmailsForTopic(
   return data ?? [];
 }
 
-// Envio em paralelo com limite de 5
 async function sendEmailsInBatches(
   emails: { endpoint: string; name: string }[],
   title: string,
   message: string
 ) {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-
-  // 🔍 Verifica conexão SMTP (importante na Vercel)
-  await new Promise((resolve, reject) => {
-    transporter.verify((error, success) => {
-      if (error) {
-        console.error("Erro na verificação SMTP:", error);
-        reject(error);
-      } else {
-        console.log("✅ Servidor SMTP pronto:", success);
-        resolve(success);
-      }
-    });
-  });
-
-  const batchSize = 5;
+  const batchSize = 100;
+  const results: { success: string[]; failed: string[] } = {
+    success: [],
+    failed: [],
+  };
 
   for (let i = 0; i < emails.length; i += batchSize) {
     const batch = emails.slice(i, i + batchSize);
 
-    await Promise.allSettled(
-      batch.map(async ({ endpoint: email, name }) => {
-        try {
-          const res = await transporter.sendMail({
-            from: `"IPCatolé" <${process.env.GMAIL_USER}>`,
-            to: email,
-            subject: title || "Notificação IPCatolé",
-            html: message,
-          });
+    const batchData = batch.map(({ endpoint: email, name }) => ({
+      from: `"IPCatolé" <${process.env.RESEND_USER}>`,
+      to: email,
+      subject: title || "Notificação IPCatolé",
+      html: message,
+    }));
 
-          console.log(`✅ Email enviado para ${email}`, res.messageId);
-        } catch (err) {
-          console.error(`❌ Falha ao enviar para ${email}:`, err);
-        }
-      })
-    );
+    try {
+      const { data } = await resend.batch.send(batchData, {
+        batchValidation: "permissive",
+      });
 
-    // pequena pausa entre os lotes para não sobrecarregar o Gmail
+      if (data?.errors) {
+        // Resend retorna um array com status de cada envio
+        data?.errors.forEach((fail: object, idx: number) => {
+          return {
+            ...fail,
+            email: batch[idx].endpoint,
+          };
+        });
+
+        console.error("Erro no envio do lote:", data?.errors);
+      }
+    } catch (err) {
+      console.error("Erro inesperado no envio do lote:", err);
+      results.failed.push(...batch.map((b) => b.endpoint));
+    }
+
+    // pausa leve entre lotes (evita bursts)
     if (i + batchSize < emails.length) {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((r) => setTimeout(r, 1500));
     }
   }
 
-  console.log(`🎉 Envio concluído (${emails.length} destinatários)`);
+  return results;
 }
 
 export async function POST(req: Request) {
@@ -105,12 +96,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // 💡 dispara a Promise de envio, mas sem bloquear a resposta
-    sendEmailsInBatches(emails, title, message).catch((err) =>
-      console.error("Erro no envio:", err)
-    );
-
-    // retorna rápido ao cliente
+    // Envia em background
+    setImmediate(() => {
+      sendEmailsInBatches(emails, title, message);
+    });
     return NextResponse.json({
       message: `Envio iniciado para ${emails.length} destinatário(s).`,
     });

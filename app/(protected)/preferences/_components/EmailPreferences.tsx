@@ -150,7 +150,7 @@ export default function EmailPreferences({
                 disabled={loading}
                 className="flex-1"
               >
-                {loading ? "Salvando..." : "Salvar Alterações"}
+                {loading ? "Atualizando..." : "Atualizar preferências"}
               </Button>
               <Button
                 onClick={handleUnsubscribe}
@@ -158,7 +158,7 @@ export default function EmailPreferences({
                 disabled={loading}
                 className="flex-1"
               >
-                Cancelar Inscrição
+                Não quero nenhum email
               </Button>
             </div>
           </CardContent>
