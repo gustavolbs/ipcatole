@@ -12,7 +12,7 @@ export const WelcomeEmail = ({ nome }: WelcomeEmailProps) => {
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: hsl(150, 45%, 20%); max-width: 600px; margin: 0 auto; padding: 20px; background-color: hsl(40, 35%, 92%);">
   <div style="background: linear-gradient(135deg, hsl(150, 55%, 42%), hsl(150, 60%, 38%)); padding: 40px; text-align: center; border-radius: 12px 12px 0 0; box-shadow: 0 10px 40px -10px hsl(150, 55%, 42%, 0.3);">
-    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Bem-vindo à Nossa Comunidade!</h1>
+    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Bem-vindo(a) à Nossa Comunidade!</h1>
   </div>
   
   <div style="background: hsl(45, 40%, 88%); padding: 40px; border: 1px solid hsl(40, 25%, 75%); border-top: none; border-radius: 0 0 12px 12px;">

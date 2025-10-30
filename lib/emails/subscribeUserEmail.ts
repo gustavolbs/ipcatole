@@ -50,7 +50,7 @@ export const subscribeUserEmail = async (email: string) => {
 
     await sendEmail(
       "none",
-      "Seja bem vindo!",
+      "Bem-vindo(a) a IPCatolé!",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       WelcomeEmail({ nome: (userData?.user as any)?.name ?? email }),
       email
