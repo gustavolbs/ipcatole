@@ -16,8 +16,8 @@ const navItems = [
   { name: "Bíblia", path: "/biblia" },
   { name: "Hinário", path: "/hinario" },
   { name: "Catecismo", path: "/catecismo" },
-  { name: "Artigos", path: "/artigos" },
-  { name: "Escalas", path: "https://wmanagement.vercel.app/" },
+  // { name: "Artigos", path: "/artigos" },
+  { name: "Sou músico", path: "https://wmanagement.vercel.app/" },
 ];
 
 const Navbar = ({ user }: NavbarProps) => {
