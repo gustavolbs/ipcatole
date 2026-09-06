@@ -1,0 +1,11 @@
+{
+  "numero": "234",
+  "titulo": "Um Pequeno a Repousar",
+  "categoria": "Natal",
+  "estrofes": [
+    "Quem é o pequeno a repousar\nNos braços de Maria,\nA quem os anjos vêm cantar\nOs hinos de alegria?",
+    "chorus:É este Jesus o Rei que anuncia a paz\nA quem Deus quer bem.\nDa virgem eleita é o filho, Jesus,\nQue nasceu em Belém!",
+    "Por que tão pobre fora, então\nA sua estrebaria?\nÉ que ao pobre pecador\nO verbo a paz traria!",
+    "Trazei a ele o coração,\nProstrai-vos reverentes,\nAos pés do Rei, que a salvação\nNos trouxe eternamente!"
+  ]
+}
