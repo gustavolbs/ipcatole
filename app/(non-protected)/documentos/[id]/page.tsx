@@ -12,6 +12,7 @@ import churchDocuments, {
   westminsterConfessionChapters,
 } from "@/data/documentos";
 import { CatecismoViewer } from "../_components/CatecismoViewer";
+import { ConfissaoWestminsterViewer } from "../_components/ConfissaoWestminsterViewer";
 
 const categoryLabel = {
   "simbolo-de-fe-ipb": "Símbolo de Fé da IPB",
@@ -61,7 +62,8 @@ export default async function DocumentoPage({
         : null;
 
   const externalSources = document.sources.filter(
-    (source) => source.url.startsWith("http://") || source.url.startsWith("https://")
+    (source) =>
+      source.url.startsWith("http://") || source.url.startsWith("https://")
   );
 
   return (
@@ -101,26 +103,9 @@ export default async function DocumentoPage({
           {catecismoItems && <CatecismoViewer items={catecismoItems} />}
 
           {id === "confissao-fe-westminster" && (
-            <section className="space-y-4">
-              <div>
-                <h2 className="text-2xl font-bold">Capítulos</h2>
-                <p className="text-sm text-muted-foreground">
-                  Índice dos 33 capítulos da Confissão de Fé de Westminster.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                {westminsterConfessionChapters.map((chapter) => (
-                  <Card key={chapter.number}>
-                    <CardContent className="flex gap-3 p-4">
-                      <Badge variant="outline" className="h-fit">
-                        {chapter.number}
-                      </Badge>
-                      <p className="font-medium">{chapter.title}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
+            <ConfissaoWestminsterViewer
+              chapters={westminsterConfessionChapters}
+            />
           )}
 
           {id === "gtsi" && (
