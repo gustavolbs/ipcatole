@@ -14,9 +14,10 @@ export const catecismoMaiorWestminster: ChurchDocument = {
   localDataPath: "data/catecismo-maior.ts",
   sources: [
     {
-      label: "Arquivo local do projeto",
-      url: "/data/catecismo-maior.ts",
-      notes: "Conteúdo já existente no repositório.",
+      label: "Catecismo Maior de Westminster — PDF publicado pela IPB",
+      url: "https://ipb.org.br/content/Arquivos/Catecismo_Maior_de_Westminster.pdf",
+      publisher: "Igreja Presbiteriana do Brasil",
+      notes: "O conteúdo também está disponível para leitura dentro do site.",
     },
   ],
 };
@@ -33,9 +34,10 @@ export const breveCatecismoWestminster: ChurchDocument = {
   localDataPath: "data/catecismo-breve.ts",
   sources: [
     {
-      label: "Arquivo local do projeto",
-      url: "/data/catecismo-breve.ts",
-      notes: "Conteúdo já existente no repositório.",
+      label: "Breve Catecismo de Westminster — PDF publicado pela IPB",
+      url: "https://ipb.org.br/content/Arquivos/Breve_Catecismo_de_Westminster.pdf",
+      publisher: "Igreja Presbiteriana do Brasil",
+      notes: "O conteúdo também está disponível para leitura dentro do site.",
     },
   ],
 };
