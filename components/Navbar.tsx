@@ -15,7 +15,7 @@ const navItems = [
   { name: "Início", path: "/" },
   { name: "Bíblia", path: "/biblia" },
   { name: "Hinário", path: "/hinario" },
-  { name: "Catecismo", path: "/catecismo" },
+  { name: "Documentos", path: "/documentos" },
   // { name: "Artigos", path: "/artigos" },
   { name: "Sou músico", path: "https://wmanagement.vercel.app/" },
 ];
@@ -24,13 +24,17 @@ const Navbar = ({ user }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => {
+    if (!path.startsWith("/")) return false;
+    if (path === "/") return pathname === "/";
+
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white/20 backdrop-blur-sm border-b shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity"
@@ -38,7 +42,6 @@ const Navbar = ({ user }: NavbarProps) => {
             <LogoWithName />
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
@@ -51,7 +54,6 @@ const Navbar = ({ user }: NavbarProps) => {
               </Link>
             ))}
 
-            {/* Botão dinâmico */}
             {user ? (
               <Link href="/dashboard">
                 <Button
@@ -73,16 +75,15 @@ const Navbar = ({ user }: NavbarProps) => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
+            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden py-4 space-y-2 animate-fade-in">
             {navItems.map((item) => (
@@ -100,7 +101,6 @@ const Navbar = ({ user }: NavbarProps) => {
               </Link>
             ))}
 
-            {/* Botão dinâmico mobile */}
             {user ? (
               <Link href="/dashboard" onClick={() => setIsOpen(false)}>
                 <Button
