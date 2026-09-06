@@ -1,0 +1,22 @@
+name: Inspect HNC amen sources
+
+on:
+  push:
+    branches:
+      - data/add-hnc-amens
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch official amen XMLs
+        run: |
+          set -euo pipefail
+          for code in B C D; do
+            echo "===== ${code} ====="
+            curl --fail --silent --show-error "https://novocantico.com.br/hino/${code}/${code}.xml"
+            echo
+          done
