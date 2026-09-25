@@ -17,6 +17,10 @@ const navItems = [
   { name: "Hinário", path: "/hinario" },
   { name: "Documentos", path: "/documentos" },
   // { name: "Artigos", path: "/artigos" },
+  {
+    name: "Recadastramento",
+    path: "https://adm.ipcatole.org.br/membros/cadastro-publico.php",
+  },
   { name: "Sou músico", path: "https://wmanagement.vercel.app/" },
 ];
 
